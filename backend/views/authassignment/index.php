@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\authassignmentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Authassignments';
+$this->title = 'Назначение ролей';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="authassignment-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Authassignment', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Назначить роль', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

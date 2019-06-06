@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\authassignment;
+use backend\models\Contragents;
 
 /**
- * authassignmentSearch represents the model behind the search form of `app\models\authassignment`.
+ * ContragentsSearch represents the model behind the search form of `backend\models\Contragents`.
  */
-class authassignmentSearch extends authassignment
+class ContragentsSearch extends Contragents
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class authassignmentSearch extends authassignment
     public function rules()
     {
         return [
-            [['item_name', 'user_id'], 'safe'],
-            [['created_at'], 'integer'],
+            [['CID', 'INN', 'KPP', 'OGRN'], 'integer'],
+            [['ContrName', 'ContrFullName'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class authassignmentSearch extends authassignment
      */
     public function search($params)
     {
-        $query = authassignment::find();
+        $query = Contragents::find();
 
         // add conditions that should always apply here
 
@@ -58,13 +58,15 @@ class authassignmentSearch extends authassignment
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'created_at' => $this->created_at,
+            'CID' => $this->CID,
+            'INN' => $this->INN,
+            'KPP' => $this->KPP,
+            'OGRN' => $this->OGRN,
         ]);
 
-        $query->andFilterWhere(['like', 'item_name', $this->item_name])
-            ->andFilterWhere(['like', 'user_id', $this->user_id]);
+        $query->andFilterWhere(['like', 'ContrName', $this->ContrName])
+            ->andFilterWhere(['like', 'ContrFullName', $this->ContrFullName]);
 
         return $dataProvider;
     }
 }
-

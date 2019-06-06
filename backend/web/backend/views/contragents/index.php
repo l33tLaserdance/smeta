@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\authitemSearch */
+/* @var $searchModel backend\models\ContragentsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Роли';
+$this->title = 'Contragents';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="authitem-index">
+<div class="contragents-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Создать роль', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Contragents', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,13 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'name',
-            'type',
-            'description:ntext',
-            'rule_name',
-            'data',
-            //'created_at',
-            //'updated_at',
+            'CID',
+            'ContrName',
+            'ContrFullName',
+            'INN',
+            'KPP',
+            //'OGRN',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -2,13 +2,15 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use frontend\models\Itemtable;
+use kartik\export\ExportMenu;
 use kartik\typeahead\Typeahead;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
+use frontend\assets\SmetaAsset;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\SmetaSearch */
@@ -16,6 +18,7 @@ use yii\widgets\Pjax;
 
 $this->title = 'Смета';
 $this->params['breadcrumbs'][] = $this->title;
+SmetaAsset::register($this);
 ?>
 
 <div class="smeta-index">
@@ -25,19 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
 			<h1><?= Html::encode($this->title) ?></h1>
 			<?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 		</div>
-		<div class="col-lg-4">
-			<?php $form = ActiveForm::begin(); ?>
-			<?= $form->field($modelCID, 'ContrFullName')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($modelCID, 'INN')->textInput() ?>
-			<?= $form->field($modelCID, 'KPP')->textInput() ?>
-			<?= $form->field($modelCID, 'OGRN')->textInput() ?>
-			<?php ActiveForm::end(); ?>
-		</div>
-		<div class="col-lg-4">
+		<div class="col-lg-8">
 		<label class="control-label">Контрагент</label>
 		<?php
-			$gg = Yii::$app->getRequest()->getQueryParam('x');
-			echo $gg;
+			//$gg = Yii::$app->getRequest()->getQueryParam('x');
+			//echo $gg;
 		?>
 		<?php Pjax::begin(); ?>
 			<?=  Typeahead::widget([
@@ -56,6 +51,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			]);
 			?>
 		<?php Pjax::end(); ?>
+		</div>
+	<div class="row">
+		<?php Pjax::begin(); ?>
+		<div class="col-lg-2">
 		<label class="control-label">ИНН</label>
 			<?=  Typeahead::widget([
 				'name' => 'INN',
@@ -64,12 +63,16 @@ $this->params['breadcrumbs'][] = $this->title;
 				'pluginOptions' => ['highlight'=>true],
 				'dataset' => [
 					[
-						'prefetch' => Url::to(['smeta/i-n-n']),
-						'limit' => 10
+						'remote' => [
+							'url' => Url::to(['smeta/i-n-n']) . '?q=%QUERY',
+							'wildcard' => '%QUERY'
+						]
 					]
 				]
 			]);
 			?>
+		</div>
+		<div class="col-lg-2">
 		<label class="control-label">КПП</label>
 			<?=  Typeahead::widget([
 				'name' => 'KPP',
@@ -78,12 +81,16 @@ $this->params['breadcrumbs'][] = $this->title;
 				'pluginOptions' => ['highlight'=>true],
 				'dataset' => [
 					[
-						'prefetch' => Url::to(['smeta/k-p-p']),
-						'limit' => 10
+						'remote' => [
+							'url' => Url::to(['smeta/k-p-p']) . '?q=%QUERY',
+							'wildcard' => '%QUERY'
+						]
 					]
 				]
 			]);
 			?>
+		</div>
+		<div class="col-lg-2">
 		<label class="control-label">ОГРН</label>
 			<?=  Typeahead::widget([
 				'name' => 'OGRN',
@@ -92,50 +99,73 @@ $this->params['breadcrumbs'][] = $this->title;
 				'pluginOptions' => ['highlight'=>true],
 				'dataset' => [
 					[
-						'prefetch' => Url::to(['smeta/o-g-r-n']),
-						'limit' => 10
+						'remote' => [
+							'url' => Url::to(['smeta/o-g-r-n']) . '?q=%QUERY',
+							'wildcard' => '%QUERY'
+						]
 					]
 				]
 			]);
 			?>
 		</div>
+			<?php Pjax::end(); ?>
 	</div>
 	
     <p>
         <?= Html::a('Добавить услугу/товар', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-	<p><?= $model::find()->sum('ItemSumm') ?> </p> 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'ItemID',
+		<?php
+		$gridColumns = [
+			'ItemID',
             'ItemName',
             'ItemMeasurement',
             'Amount',
-			[
-				'attribute' => 'ItemCost',
-				'footer' => 'ИТОГО: оборудование ',
-			],
-            [
-				'attribute' => 'ItemSumm',
-				'footer' => $model::find()->sum('ItemSumm'),
-			],
+            'ItemCost',
+            'ItemSumm',
             'ServiceName',
-			[
-				'attribute' => 'ServiceCost',
-				'footer' => 'ИТОГО: услуги ',
-			],
-            [
-				'attribute' => 'ServiceSumm',
-				'footer' => $model::find()->sum('ServiceSumm'),
-			],
+			'ServiceCost',
+			'ServiceSumm'
+		];
+		echo ExportMenu::widget([
+			'dataProvider' => $dataProvider,
+			'columns' => $gridColumns,
+		]);
+		?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+		'pjax' => true,
+		'id' => 'tab2',
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            ['attribute'=>'ItemID','format'=>['integer'], 'hAlign'=>'center', 'width'=>'10px'],
+            ['attribute'=>'ItemName','format'=>['text'], 'hAlign'=>'center', 'width'=>'200px','footer' => 'ИТОГО: оборудование '],
+			['attribute'=>'ItemMeasurement','format'=>['text'], 'hAlign'=>'center', 'width'=>'20px'],
+			['attribute'=>'ItemCost','format'=>['text'], 'hAlign'=>'center', 'width'=>'20px'],
+            ['attribute'=>'Amount','format'=>['integer'], 'hAlign'=>'center', 'width'=>'20px'],
+			['attribute'=>'ItemSumm','format'=>['text'], 'hAlign'=>'center', 'width'=>'20px','footer' => $model::find()->sum('ItemSumm')],
+			['attribute'=>'ServiceName','format'=>['text'], 'hAlign'=>'center', 'width'=>'300px','footer' => 'ИТОГО: услуги '],
+			['attribute'=>'ServiceCost','format'=>['text'], 'hAlign'=>'center', 'width'=>'20px'],
+			['attribute'=>'ServiceSumm','format'=>['text'], 'hAlign'=>'center', 'width'=>'20px','footer' => $model::find()->sum('ServiceSumm')],
 			
             ['class' => 'yii\grid\ActionColumn'],
         ],
-		'showFooter' => true,
+		'toolbar' => [
+			'{export}',
+			'{toggleData}',
+		],
+		'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+		'export' => [
+			'fontAwesome' => true
+		],
+			'bordered' => true,
+			'hover' => false,
+			'panel' => [
+				'type' => GridView::TYPE_PRIMARY,
+			],
+			'persistResize' => false,
+			'showFooter' => true,
     ]); ?>
 </div>
 <input type="checkbox" id="nav-toggle" hidden>
@@ -143,7 +173,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <label for="nav-toggle" class="nav-toggle" onclick></label>
 <?php $form = ActiveForm::begin(); ?>
 	
-	<?= $form->field($model, 'ItemName')->textInput(['maxlength' => true]) ?> <!--widget(Select2::classname(), [
+ <!--widget(Select2::classname(), [
 		'data' => ArrayHelper::map(Itemtable::find()->all(), 'ItemID', 'ItemName'),
 		'language' => 'en',
 		'options' => ['placeholder' => 'Выберите товар', 'id' => 'ItemName'],
@@ -151,7 +181,22 @@ $this->params['breadcrumbs'][] = $this->title;
 			'allowClear' => true
 		],
 	]); -->
-	
+	<?= $form->field($model, 'ItemName')->widget(Typeahead::classname(), [ 
+				'name' => 'ItemName',
+				'options' => ['placeholder' => 'Наименование'],
+				'scrollable' => true,
+				'pluginOptions' => ['highlight'=>true],
+				'dataset' => [
+					[
+						'remote' => [
+							'url' => Url::to(['smeta/item-name']) . '?q=%QUERY',
+							'wildcard' => '%QUERY'
+						]
+					]
+				]
+			]);
+	?>
+			
     <?= $form->field($model, 'ItemMeasurement')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'Amount')->textInput() ?>

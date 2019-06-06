@@ -14,6 +14,7 @@ $this->title = 'Администрирование VDTECH Accountment';
 				<h1>VDTECH Accountment</h1>
 
 				<p class="lead">Вы успешно авторизованы в системе, <?=Yii::$app->user->identity->username?></p>
+				<p class="lead">Режим работы: администраторский.</p>
 			</div>
     </div>
 
@@ -21,7 +22,7 @@ $this->title = 'Администрирование VDTECH Accountment';
 
         <div class="row">
 		
-			<div class="col-lg-4">
+			<div class="col-lg-6">
                 <h2>Пользователи</h2>
 
                 <p>Создание новых пользователей, а так же редактирование пользовательских данных</p>
@@ -36,20 +37,12 @@ $this->title = 'Администрирование VDTECH Accountment';
 				
 				<p><a class="btn btn-default" href="backend/web/authassignment/index">Перейти&raquo;</a></p>
             </div>
-			
-            <div class="col-lg-4">
-                <h2>Работа с готовыми сметами</h2>
+			<div class="col-lg-6">
+                <h2>Работа с контрагентами</h2>
 
-                <p>Просмотр и редактирование существующих смет</p>
+                <p>Добавление, редактирование или удаление новых контрагентов системы</p>
 
-                <p><a class="btn btn-default" href="admin">Перейти &raquo;</a></p>
-            </div>
-			<div class="col-lg-4">
-                <h2>Журнал событий</h2>
-
-                <p>Журнал событий отображает все действия, которые производились в системе</p>
-
-                <p><a class="btn btn-default" href="admin">Перейти &raquo;</a></p>
+                <p><a class="btn btn-default" href="backend/web/contragents/index">Перейти &raquo;</a></p>
             </div>
 
         </div>

@@ -8,6 +8,9 @@ use frontend\models\Smeta;
 use frontend\models\SmetaSearch;
 use frontend\models\Contragents;
 use frontend\models\ContragentsSearch;
+use frontend\models\Itemtable;
+use frontend\models\ItemtableSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -23,6 +26,26 @@ class SmetaController extends Controller
     public function behaviors()
     {
         return [
+			'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+					[
+                        'actions' => ['delete'],
+                        'allow' => true,
+						'roles' => ['canAdmin'],
+                    ],
+                    [
+                        'actions' => ['index','view','create','update','i-n-n','contr-full-name','k-p-p','o-g-r-n','item-name'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+						// * - все пользователи, @ - зарегистрированные пользователи
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -146,56 +169,72 @@ class SmetaController extends Controller
 		$data1 = $command1->queryAll();
 		$out1 = [];
 		foreach ($data1 as $d) {
-			$out1[] = ['value' => $d['ContrFullName']];
+			//$out1[] = ['value' => $d['ContrFullName']];
 			$out1[] = $d['ContrFullName'];
 		}
 		echo Json::encode($out1);
 	}
 	
-	public function actionINN($w = null) {
+	public function actionINN($q = null) {
 		$query = Contragents::find();
 		
 		$query->select('INN')
 			->from('Contragents')
-			->where('INN LIKE "%' . $w .'%"')
+			->where('INN LIKE "%' . $q .'%"')
 			->orderBy('INN');
 		$command = $query->createCommand();
 		$data = $command->queryAll();
 		$out = [];
 		foreach ($data as $d) {
-			$out[] = ['value' => $d['INN']];
+			$out[] = $d['INN'];
 		}
 		echo Json::encode($out);
 	}
 	
-	public function actionKPP($e = null) {
+	public function actionKPP($q = null) {
 		$query = Contragents::find();
 		
 		$query->select('KPP')
 			->from('Contragents')
-			->where('KPP LIKE "%' . $e .'%"')
+			->where('KPP LIKE "%' . $q .'%"')
 			->orderBy('KPP');
 		$command = $query->createCommand();
 		$data = $command->queryAll();
 		$out = [];
 		foreach ($data as $d) {
-			$out[] = ['value' => $d['KPP']];
+			$out[] = $d['KPP'];
 		}
 		echo Json::encode($out);
 	}
 	
-	public function actionOGRN($r = null) {
+	public function actionOGRN($q = null) {
 		$query = Contragents::find();
 		
 		$query->select('OGRN')
 			->from('Contragents')
-			->where('OGRN LIKE "%' . $r .'%"')
+			->where('OGRN LIKE "%' . $q .'%"')
 			->orderBy('OGRN');
 		$command = $query->createCommand();
 		$data = $command->queryAll();
 		$out = [];
 		foreach ($data as $d) {
-			$out[] = ['value' => $d['OGRN']];
+			$out[] = $d['OGRN'];
+		}
+		echo Json::encode($out);
+	}
+	
+		public function actionItemName($q = null) {
+		$query = Itemtable::find();
+		
+		$query->select('ItemName')
+			->from('Itemtable')
+			->where('ItemName LIKE "%' . $q .'%"')
+			->orderBy('ItemName');
+		$command = $query->createCommand();
+		$data = $command->queryAll();
+		$out = [];
+		foreach ($data as $d) {
+			$out[] = $d['ItemName'];
 		}
 		echo Json::encode($out);
 	}

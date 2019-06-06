@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\authitem;
-use backend\models\authitemSearch;
+use backend\models\Contragents;
+use backend\models\ContragentsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AuthitemController implements the CRUD actions for authitem model.
+ * ContragentsController implements the CRUD actions for Contragents model.
  */
-class AuthitemController extends Controller
+class ContragentsController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class AuthitemController extends Controller
     }
 
     /**
-     * Lists all authitem models.
+     * Lists all Contragents models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new authitemSearch();
+        $searchModel = new ContragentsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,8 +45,8 @@ class AuthitemController extends Controller
     }
 
     /**
-     * Displays a single authitem model.
-     * @param string $id
+     * Displays a single Contragents model.
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -58,16 +58,16 @@ class AuthitemController extends Controller
     }
 
     /**
-     * Creates a new authitem model.
+     * Creates a new Contragents model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new authitem();
+        $model = new Contragents();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->name]);
+            return $this->redirect(['view', 'id' => $model->CID]);
         }
 
         return $this->render('create', [
@@ -76,9 +76,9 @@ class AuthitemController extends Controller
     }
 
     /**
-     * Updates an existing authitem model.
+     * Updates an existing Contragents model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -87,7 +87,7 @@ class AuthitemController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->name]);
+            return $this->redirect(['view', 'id' => $model->CID]);
         }
 
         return $this->render('update', [
@@ -96,9 +96,9 @@ class AuthitemController extends Controller
     }
 
     /**
-     * Deletes an existing authitem model.
+     * Deletes an existing Contragents model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -110,18 +110,18 @@ class AuthitemController extends Controller
     }
 
     /**
-     * Finds the authitem model based on its primary key value.
+     * Finds the Contragents model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return authitem the loaded model
+     * @param integer $id
+     * @return Contragents the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = authitem::findOne($id)) !== null) {
+        if (($model = Contragents::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Запрашиваемая страница не существует.');
     }
 }

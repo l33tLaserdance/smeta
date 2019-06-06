@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\authitem */
 
-$this->title = 'Update Authitem: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Authitems', 'url' => ['index']];
+$this->title = 'Изменить роль: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Роли', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->name]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Изменить';
 ?>
 <div class="authitem-update">
 

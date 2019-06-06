@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\authitem */
+/* @var $model backend\models\Contragents */
 
-$this->title = 'Создать роль';
-$this->params['breadcrumbs'][] = ['label' => 'Роли', 'url' => ['index']];
+$this->title = 'Create Contragents';
+$this->params['breadcrumbs'][] = ['label' => 'Contragents', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="authitem-create">
+<div class="contragents-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
